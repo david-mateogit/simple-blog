@@ -1,0 +1,28 @@
+<% include ./partials/header %> <% blogs.forEach(blog => { %>
+<article>
+  <div class="ui container left aligned">
+    <div class="ui segment grid">
+      <div class="three wide column">
+        <img class="ui medium image" src="<%= blog.image %>" />
+      </div>
+      <div class="thirteen wide column">
+        <div class="ui huge header middle aligned">
+          <a href="/blogs/<%= blog._id %> "><%= blog.title %></a>
+        </div>
+        <div class="middle aligned tiny-text">
+          <%= blog.created.toDateString() %>
+        </div>
+        <div class="meta">
+          <%= blog.summary %>
+        </div>
+        <div class="meta">
+          <p><%= blog.body.substring(0, 100) %>...</p>
+        </div>
+        <div class="extra">
+          <a href="/blogs/<%= blog._id %> ">Read More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+<% }) %> <% include ./partials/footer %>

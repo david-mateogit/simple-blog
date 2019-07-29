@@ -1,0 +1,46 @@
+i.icon {
+  font-size: 2em;
+}
+
+.nav {
+  margin-bottom: 4em;
+}
+.container.main {
+  margin-top: 4em;
+  margin-bottom: 4em;
+}
+
+.article {
+  margin-top: 2em;
+}
+
+article:last-of-type {
+  margin-bottom: 4rem !important;
+}
+
+.site {
+  margin: 3rem auto !important;
+  max-width: 60rem !important;
+}
+
+.site-footer {
+  background-color: #404040;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+.darkmode-background {
+  background: #dcdcdc !important;
+}
+
+.buttons {
+  display: flex;
+  margin-top: -40px;
+  margin-bottom: 40px;
+}
+
+.tiny-text {
+  font-size: 10px;
+}
