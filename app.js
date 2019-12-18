@@ -1,33 +1,35 @@
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const expressSaninitzer = require('express-sanitizer');
+const expressSanitizer = require('express-sanitizer');
+
 const express = require('express');
+
 const app = express();
 const mongoose = require('mongoose');
 
-//APP CONFIG
+// APP CONFIG
 mongoose.connect('mongodb://localhost/restful_blog_app', {
-  useNewUrlParser: true
+  useNewUrlParser: true,
 });
 mongoose.set('useCreateIndex', true);
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(`${__dirname}/public`));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(expressSaninitzer());
+app.use(expressSanitizer());
 app.use(methodOverride('_method'));
 
-//MONGO CONFIG
+// MONGO CONFIG
 const blogSchema = new mongoose.Schema({
   title: String,
   image: String,
   summary: String,
   body: String,
-  created: { type: Date, default: Date.now }
+  created: { type: Date, default: Date.now },
 });
 
 const Blog = mongoose.model('Blog', blogSchema);
 
-//RESTFUL ROUTES
+// RESTFUL ROUTES
 app.get('/', function(req, res) {
   res.redirect('/blogs');
 });
@@ -37,21 +39,21 @@ app.get('/blogs', function(req, res) {
     if (err) {
       console.log(err);
     } else {
-      res.render('index', { blogs: blogs });
+      res.render('index', { blogs });
     }
   });
 });
 
-//NEW POST ROUTE
+// NEW POST ROUTE
 app.get('/blogs/new', function(req, res) {
   res.render('./blogs/new');
 });
 
-//CREATE POST ROUTE
+// CREATE POST ROUTE
 app.post('/blogs', function(req, res) {
-  //sanitize body
+  // sanitize body
   req.body.blog.body = req.sanitize(req.body.blog.body);
-  //create blog
+  // create blog
   Blog.create(req.body.blog, function(err, newBlog) {
     if (err) {
       console.log(err);
@@ -62,7 +64,7 @@ app.post('/blogs', function(req, res) {
   });
 });
 
-//SHOW BLOG ROUTE
+// SHOW BLOG ROUTE
 app.get('/blogs/:id', function(req, res) {
   Blog.findById(req.params.id, function(err, foundBlog) {
     if (err) {
@@ -73,7 +75,7 @@ app.get('/blogs/:id', function(req, res) {
   });
 });
 
-//EDIT ROUTE
+// EDIT ROUTE
 app.get('/blogs/:id/edit', function(req, res) {
   Blog.findById(req.params.id, function(err, foundBlog) {
     if (err) {
@@ -84,9 +86,9 @@ app.get('/blogs/:id/edit', function(req, res) {
   });
 });
 
-//UPDATE ROUTE
+// UPDATE ROUTE
 app.put('/blogs/:id', function(req, res) {
-  //sanitize body
+  // sanitize body
   req.body.blog.body = req.sanitize(req.body.blog.body);
   Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(
     err,
@@ -95,12 +97,12 @@ app.put('/blogs/:id', function(req, res) {
     if (err) {
       res.redirect('/blogs');
     } else {
-      res.redirect('/blogs/' + req.params.id);
+      res.redirect(`/blogs/${req.params.id}`);
     }
   });
 });
 
-//DELETE ROUTE
+// DELETE ROUTE
 app.delete('/blogs/:id', function(req, res) {
   Blog.findByIdAndRemove(req.params.id, function(err, removedBlog) {
     if (err) {
